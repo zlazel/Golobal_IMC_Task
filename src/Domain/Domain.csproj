@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>Golobal_IMC_Task.Domain</RootNamespace>
+    <AssemblyName>Golobal_IMC_Task.Domain</AssemblyName>
+  </PropertyGroup>
+
+</Project>

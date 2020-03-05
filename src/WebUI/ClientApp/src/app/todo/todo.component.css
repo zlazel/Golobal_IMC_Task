@@ -1,0 +1,38 @@
+#listOptions {
+    margin-right: 10px;
+}
+
+#Category-items .item-input-control {
+    border: 0;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+#Category-items .done-Category {
+    text-decoration: line-through;
+}
+
+#Category-items .Category-item-title {
+    padding-top: 8px;
+}
+
+#Category-items .list-group-item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#Category-items .list-group-item .btn-xs {
+    padding: 0;
+}
+
+#Category-items .Category-item-checkbox {
+    padding-top: 8px;
+}
+
+#Category-items .Category-item-commands {
+    padding-top: 4px;
+}
+
+.modal-footer {
+    display: block;
+}
