@@ -1,4 +1,4 @@
-<h1>Category</h1>
+<h1>Categories</h1>
 
 <p>This is a complex Category list component.</p>
 
@@ -9,18 +9,18 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="clearfix">
-        <h2 class="float-left">Lists</h2>
-        <button class="btn btn-default float-right" title="Add List..."
+        <h2 class="float-left">Categories</h2>
+        <button class="btn btn-default float-right" title="Add New Category..."
           (click)="showNewListModal(newListModalTemplate)">
           <fa-icon [icon]="faPlus"></fa-icon>
         </button>
       </div>
       <ul class="list-group">
-        <li *ngFor="let list of vm.lists; index as i" class="list-group-item"
+        <li *ngFor="let list of vm.categories; index as i" class="list-group-item"
           [ngClass]="{ 'active': selectedList == list }" (click)="selectedList = list">
           <div class="clearfix">
             <div class="float-left">
-                {{ list.title }}
+                {{ list.categoryName }}
             </div>
             <div class="float-right text-right">
                 <span class="badge badge-light">{{ remainingItems(list) }}</span>
@@ -31,25 +31,26 @@
     </div>
     <div class="col-sm-8" *ngIf="selectedList">
       <div class="clearfix">
-        <h2 class="float-left">{{ selectedList.title }}</h2>
-        <button id="listOptions" class="btn btn-default float-right" title="List Options..."
+        <h2 class="float-left">{{ selectedList.categoryName }}</h2>
+        <button id="listOptions" class="btn btn-default float-right" title="Category Options..."
           (click)="showListOptionsModal(listOptionsModalTemplate)">
           <fa-icon [icon]="faEllipsisH"></fa-icon>
         </button>
       </div>
       <ul id="Category-items" class="list-group mb-2">
-        <li class="list-group-item" *ngFor="let item of selectedList.items; index as i">
+        <li class="list-group-item" *ngFor="let item of selectedList.products; index as i">
           <div class="d-flex">
-            <div class="Category-item-checkbox">
-              <input type="checkbox" [(ngModel)]="item.done" (change)="updateItem(item)" />
-            </div>
             <div class="flex-fill">
               <input id="{{ 'itemTitle' + i }}" *ngIf="item == selectedItem" type="text"
                 class="form-control item-input-control" [(ngModel)]="item.title" (keyup.enter)="updateItem(item, true)"
                 (blur)="updateItem(item)" autofocus="autofocus" />
               <div class="Category-item-title" *ngIf="item != selectedItem" [ngClass]="{ 'done-Category': item.done }"
                 (click)="editItem(item, 'itemTitle' + i)" class="form-control item-input-control">
-                <span>{{ item.title }}</span>
+                <div class="row">
+                  <div class="col-6">{{ item.title }}</div>
+                  <div class="col-6">{{ item.price }}</div>
+                  </div>
+                
               </div>
             </div>
             <div class="Category-item-commands">
@@ -60,8 +61,8 @@
             </div>
           </div>
         </li>
-        <li class="list-group-item" (click)="addItem()">
-          <button class="btn btn-default">Add Item...</button>
+        <li class="list-group-item" (click)="showNewProductModal(newItemDetailsModalTemplate, newProduct)">
+          <button class="btn btn-default">Add New Product...</button>
         </li>
       </ul>
     </div>
@@ -74,16 +75,16 @@
 
 <ng-template #listOptionsModalTemplate>
   <div class="modal-header clearfix">
-    <h4 class="modal-title float-left">List Options</h4>
+    <h4 class="modal-title float-left">Category Options</h4>
     <button type="button" class="close float-right" aria-label="Close" (click)="listOptionsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="form-group">
-      <label for="inputListTitle">Title</label>
-      <input type="text" class="form-control" id="inputListTitle" placeholder="List name..."
-        [(ngModel)]="listOptionsEditor.title" (keyup.enter)="updateListOptions()" />
+      <label for="inputListTitle">Name</label>
+      <input type="text" class="form-control" id="inputListTitle" placeholder="Category name..."
+        [(ngModel)]="listOptionsEditor.categoryName" (keyup.enter)="updateListOptions()" />
     </div>
     <div *ngIf="debug">
       <pre>{{ listOptionsEditor | json }}</pre>
@@ -104,7 +105,7 @@
 
 <ng-template #itemDetailsModalTemplate>
   <div class="modal-header clearfix">
-    <h4 class="modal-title float-left">Item Details</h4>
+    <h4 class="modal-title float-left">Product Details</h4>
     <button type="button" class="close float-right" aria-label="Close" (click)="itemDetailsModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -112,21 +113,20 @@
   <div class="modal-body">
     <div class="form">
       <div class="form-group">
-        <label for="list">List</label>
-        <select class="form-control" [(ngModel)]="itemDetailsEditor.CategoryId">
-          <option [ngValue]="list.id" *ngFor="let list of vm.lists">{{ list.title }}</option>
-        </select>
+        <label for="priority">Name</label>
+        <input class="form-control" [(ngModel)]="selectedItem.title">
       </div>
       <div class="form-group">
-        <label for="priority">Priority</label>
-        <select class="form-control" [(ngModel)]="itemDetailsEditor.priority">
-          <option [ngValue]="level.value" *ngFor="let level of vm.priorityLevels">{{ level.name }}</option>
-        </select>
+        <label for="priority">Price</label>
+        <input class="form-control" [(ngModel)]="selectedItem.price">
       </div>
       <div class="form-group">
-        <label for="note">Note</label>
-        <textarea id="note" class="form-control" rows="3" [(ngModel)]="itemDetailsEditor.note"></textarea>
+        <label for="list">Category</label>
+        <select class="form-control" [(ngModel)]="selectedItem.categoryId">
+          <option [ngValue]="category.id" *ngFor="let category of vm.categories">{{ category.categoryName }}</option>
+        </select>
       </div>
+     
     </div>
     <div *ngIf="debug">
       <pre>{{ itemDetailsEditor | json }}</pre>
@@ -145,9 +145,38 @@
   </div>
 </ng-template>
 
+<ng-template #newItemDetailsModalTemplate>
+  <div class="modal-header clearfix">
+    <h4 class="modal-title float-left">New Product</h4>
+    <button type="button" class="close float-right" aria-label="Close" (click)="newProductModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form">
+      <div class="form-group">
+        <label for="priority">Name</label>
+        <input class="form-control" [(ngModel)]="newProduct.title">
+      </div>
+      <div class="form-group">
+        <label for="priority">Price</label>
+        <input class="form-control" [(ngModel)]="newProduct.price">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="clearfix">
+      <div class="float-right">
+        <button class="btn btn-default" (click)="newProductModalRef.hide()">Cancel</button>
+        <button class="btn btn-primary" (click)="createItemDetails()">Save</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #deleteListModalTemplate>
   <div class="modal-header clearfix">
-    <h4 class="modal-title float-left">Delete "{{ selectedList?.title }}"?</h4>
+    <h4 class="modal-title float-left">Delete "{{ selectedList?.categoryName }}"?</h4>
     <button type="button" class="close float-right" aria-label="Close" (click)="deleteListModalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -168,19 +197,19 @@
 
 <ng-template #newListModalTemplate>
   <div class="modal-header clearfix">
-    <h4 class="modal-title float-left">New List</h4>
+    <h4 class="modal-title float-left">New Category</h4>
     <button type="button" class="close float-right" aria-label="Close" (click)="newListCancelled()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" placeholder="List title..." [(ngModel)]="newListEditor.title"
+      <label for="title">Name</label>
+      <input type="text" class="form-control" id="title" placeholder="Category Name..." [(ngModel)]="newListEditor.title"
         [ngClass]="{ 'is-invalid': newListEditor.error }" (keyup.enter)="addList()" />
       <div *ngIf="newListEditor.error" class="invalid-feedback">
         {{ newListEditor.error }}
-      </div>
+      </div> 
     </div>
     <div *ngIf="debug">
       <pre>{{ newListEditor | json }}</pre>

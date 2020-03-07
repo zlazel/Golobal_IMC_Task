@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Golobal_IMC_Task.WebUI.Controllers
 {
     [Authorize]
-    public class CategorysController : ApiController
+    public class CategoriesController : ApiController
     {
         [HttpGet]
         public async Task<ActionResult<CategoriesVm>> Get()

@@ -1,5 +1,6 @@
 ﻿using Golobal_IMC_Task.Application;
 using Golobal_IMC_Task.Application.Common.Models;
+using Golobal_IMC_Task.Application.Products.Commands.CreateProduct;
 using System;
 using System.Threading.Tasks;
 
@@ -20,6 +21,11 @@ namespace Golobal_IMC_Task.WebUI.IntegrationTests
         public Task<Result> DeleteUserAsync(string userId)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<string> Login(LoginCommand command)
+        {
+            return Task.FromResult("ahmed1@CA");
         }
     }
 }

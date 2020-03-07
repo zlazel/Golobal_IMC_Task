@@ -23,7 +23,7 @@ namespace Golobal_IMC_Task.Application.Categorys.Commands.UpdateCategory
 
         public async Task<bool> BeUniqueCategoryName(UpdateCategoryCommand model, string CategoryName, CancellationToken cancellationToken)
         {
-            return await _context.Categorys
+            return await _context.Categories
                 .Where(l => l.Id != model.Id)
                 .AllAsync(l => l.CategoryName != CategoryName);
         }

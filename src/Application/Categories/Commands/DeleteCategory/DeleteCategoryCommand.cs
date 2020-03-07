@@ -24,7 +24,7 @@ namespace Golobal_IMC_Task.Application.Categorys.Commands.DeleteCategory
 
             public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.Categorys
+                var entity = await _context.Categories
                     .Where(l => l.Id == request.Id)
                     .SingleOrDefaultAsync(cancellationToken);
 
@@ -33,7 +33,7 @@ namespace Golobal_IMC_Task.Application.Categorys.Commands.DeleteCategory
                     throw new NotFoundException(nameof(Category), request.Id);
                 }
 
-                _context.Categorys.Remove(entity);
+                _context.Categories.Remove(entity);
 
                 await _context.SaveChangesAsync(cancellationToken);
 

@@ -1,21 +1,25 @@
 import { Component, TemplateRef } from '@angular/core';
-import { ProductsClient, CreateProductCommand, ProductDto, UpdateProductCommand, CategorysVm, CategorysClient, CategoryDto, CreateCategoryCommand, UpdateCategoryCommand, UpdateProductDetailCommand } from '../golobal_imc_task-api';
+import { ProductsClient, CreateProductCommand, ProductDto,
+     UpdateProductCommand, CategoriesVm, CategoriesClient,
+      CategoryDto, CreateCategoryCommand, UpdateCategoryCommand } from '../golobal_imc_task-api';
 import { faPlus, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { UpdateProductDetailCommand } from '../cleanarchitecture-api';
 
 @Component({
-    selector: 'app-Category-component',
-    templateUrl: './Category.component.html',
-    styleUrls: ['./Category.component.css']
+    selector: 'app-category-component',
+    templateUrl: './category.component.html',
+    styleUrls: ['./category.component.css']
 })
 export class CategoryComponent {
 
     debug: boolean;
 
-    vm: CategorysVm;
+    vm: CategoriesVm;
 
     selectedList: CategoryDto;
     selectedItem: ProductDto;
+    newProduct= new ProductDto();
     
     newListEditor: any = {};
     listOptionsEditor: any = {};
@@ -25,16 +29,21 @@ export class CategoryComponent {
     listOptionsModalRef: BsModalRef;
     deleteListModalRef: BsModalRef;
     itemDetailsModalRef: BsModalRef;
+    newProductModalRef: BsModalRef;
 
     faPlus = faPlus;
     faEllipsisH = faEllipsisH;
 
-    constructor(private listsClient: CategorysClient, private itemsClient: ProductsClient, private modalService: BsModalService) {
+    constructor(
+        private listsClient: CategoriesClient,
+         private itemsClient: ProductsClient,
+          private modalService: BsModalService
+          ) {
         listsClient.get().subscribe(
             result => {
                 this.vm = result;
-                if (this.vm.lists.length) {
-                    this.selectedList = this.vm.lists[0];
+                if (this.vm.categories.length) {
+                    this.selectedList = this.vm.categories[0];
                 }
             },
             error => console.error(error)
@@ -43,7 +52,7 @@ export class CategoryComponent {
 
     // Lists
     remainingItems(list: CategoryDto): number {
-        return list.items.filter(t => !t.done).length;
+        return list.products.length;
     }
 
     showNewListModal(template: TemplateRef<any>): void {
@@ -59,14 +68,14 @@ export class CategoryComponent {
     addList(): void {
         let list = CategoryDto.fromJS({
             id: 0,
-            title: this.newListEditor.title,
-            items: [],
+            categoryName: this.newListEditor.title,
+            products: [],
         });
 
-        this.listsClient.create(<CreateCategoryCommand>{ title: this.newListEditor.title }).subscribe(
+        this.listsClient.create(<CreateCategoryCommand>{ categoryName: this.newListEditor.title }).subscribe(
             result => {
                 list.id = result;
-                this.vm.lists.push(list);
+                this.vm.categories.push(list);
                 this.selectedList = list;
                 this.newListModalRef.hide();
                 this.newListEditor = {};
@@ -86,17 +95,20 @@ export class CategoryComponent {
     showListOptionsModal(template: TemplateRef<any>) {
         this.listOptionsEditor = {
             id: this.selectedList.id,
-            title: this.selectedList.title,
+            categoryName: this.selectedList.categoryName,
         };
 
         this.listOptionsModalRef = this.modalService.show(template);
     }
 
     updateListOptions() {
+        console.log('this.selectedList');
+        console.log(this.selectedList);
+        
         this.listsClient.update(this.selectedList.id, UpdateCategoryCommand.fromJS(this.listOptionsEditor))
             .subscribe(
                 () => {
-                    this.selectedList.title = this.listOptionsEditor.title,
+                    this.selectedList.categoryName = this.listOptionsEditor.categoryName,
                     this.listOptionsModalRef.hide();
                     this.listOptionsEditor = {};
                 },
@@ -113,8 +125,8 @@ export class CategoryComponent {
         this.listsClient.delete(this.selectedList.id).subscribe(
             () => {
                 this.deleteListModalRef.hide();
-                this.vm.lists = this.vm.lists.filter(t => t.id != this.selectedList.id)
-                this.selectedList = this.vm.lists.length ? this.vm.lists[0] : null;
+                this.vm.categories = this.vm.categories.filter(t => t.id != this.selectedList.id)
+                this.selectedList = this.vm.categories.length ? this.vm.categories[0] : null;
             },
             error => console.error(error)
         );
@@ -131,37 +143,76 @@ export class CategoryComponent {
         this.itemDetailsModalRef = this.modalService.show(template);
     }
 
+    showNewProductModal(template: TemplateRef<any>, item: ProductDto): void {
+        this.selectedItem = item;
+        this.itemDetailsEditor = {
+            ...this.selectedItem
+        };
+
+        this.newProductModalRef = this.modalService.show(template);
+    }
+
     updateItemDetails(): void {
-        this.itemsClient.updateItemDetails(this.selectedItem.id, UpdateProductDetailCommand.fromJS(this.itemDetailsEditor))
+        this.itemDetailsEditor = {
+            ...this.selectedItem
+        };
+        this.itemsClient.update(this.selectedItem.id, UpdateProductCommand.fromJS(this.itemDetailsEditor))
             .subscribe(
                 () => {
-                    if (this.selectedItem.CategoryId != this.itemDetailsEditor.CategoryId) {
-                        this.selectedList.items = this.selectedList.items.filter(i => i.id != this.selectedItem.id)
-                        let listIndex = this.vm.lists.findIndex(l => l.id == this.itemDetailsEditor.CategoryId);
-                        this.selectedItem.CategoryId = this.itemDetailsEditor.CategoryId;
-                        this.vm.lists[listIndex].items.push(this.selectedItem);
+                    
+                    if (this.selectedItem.categoryId != this.itemDetailsEditor.CategoryId) {
+                        this.selectedList.products = this.selectedList.products.filter(i => i.id != this.selectedItem.id)
+                        let listIndex = this.vm.categories.findIndex(l => l.id == this.itemDetailsEditor.categoryId);
+                        this.selectedItem.categoryId = this.itemDetailsEditor.categoryId;
+                        this.vm.categories[listIndex].products.push(this.selectedItem);
                     }
 
-                    this.selectedItem.priority = this.itemDetailsEditor.priority;
-                    this.selectedItem.note = this.itemDetailsEditor.note;
+                    this.selectedItem.price = this.itemDetailsEditor.price;
+                    this.selectedItem.title = this.itemDetailsEditor.title;
                     this.itemDetailsModalRef.hide();
                     this.itemDetailsEditor = {};
                 },
                 error => console.error(error)
             );
     }
+    createItemDetails(): void {
+        this.newProduct.categoryId = this.selectedList.id;
+        this.itemDetailsEditor = {
+            ...this.newProduct
+        };
+        
+        this.itemsClient.create(CreateProductCommand.fromJS(this.itemDetailsEditor))
+            .subscribe(
+                () => {
+                    
+                    if (this.selectedItem.categoryId != this.itemDetailsEditor.CategoryId) {
+                        this.selectedList.products = this.selectedList.products.filter(i => i.id != this.selectedItem.id)
+                        this.selectedItem.categoryId = this.itemDetailsEditor.categoryId;
+                        let listIndex = this.vm.categories.findIndex(l => l.id == this.itemDetailsEditor.categoryId);
+                        this.vm.categories[listIndex].products.push(this.newProduct);
+                    }
 
+                    this.selectedItem.price = this.itemDetailsEditor.price;
+                    this.selectedItem.title = this.itemDetailsEditor.title;
+                    this.newProductModalRef.hide();
+                    this.itemDetailsEditor = {};
+                    this.newProduct = new ProductDto();
+                },
+                error => console.error(error)
+            );
+    }
     addItem() {
         let item = ProductDto.fromJS({
             id: 0,
             CategoryId: this.selectedList.id,
-            priority: this.vm.priorityLevels[0].value,
+            //priority: this.vm.priorityLevels[0].value,
             title: '',
-            done: false
+            price: 0
+            // done: false
         });
-
-        this.selectedList.items.push(item);
-        let index = this.selectedList.items.length - 1;
+        
+        this.selectedList.products.push(item);
+        let index = this.selectedList.products.length - 1;
         this.editItem(item, 'itemTitle' + index);
     }
 
@@ -208,11 +259,11 @@ export class CategoryComponent {
         }
 
         if (item.id == 0) {
-            let itemIndex = this.selectedList.items.indexOf(this.selectedItem);
-            this.selectedList.items.splice(itemIndex, 1);
+            let itemIndex = this.selectedList.products.indexOf(this.selectedItem);
+            this.selectedList.products.splice(itemIndex, 1);
         } else {
             this.itemsClient.delete(item.id).subscribe(
-                () => this.selectedList.items = this.selectedList.items.filter(t => t.id != item.id),
+                () => this.selectedList.products = this.selectedList.products.filter(t => t.id != item.id),
                 error => console.error(error)
             );
         }

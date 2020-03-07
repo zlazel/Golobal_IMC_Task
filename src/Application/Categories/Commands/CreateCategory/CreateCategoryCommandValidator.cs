@@ -22,7 +22,7 @@ namespace Golobal_IMC_Task.Application.Categorys.Commands.CreateCategory
 
         public async Task<bool> BeUniquecategoryName(string categoryName, CancellationToken cancellationToken)
         {
-            return await _context.Categorys
+            return await _context.Categories
                 .AllAsync(l => l.CategoryName != categoryName);
         }
     }

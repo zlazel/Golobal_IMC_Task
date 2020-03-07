@@ -25,7 +25,7 @@ namespace Golobal_IMC_Task.Application.Categorys.Commands.CreateCategory
 
                 entity.CategoryName = request.CategoryName;
 
-                _context.Categorys.Add(entity);
+                _context.Categories.Add(entity);
 
                 await _context.SaveChangesAsync(cancellationToken);
 

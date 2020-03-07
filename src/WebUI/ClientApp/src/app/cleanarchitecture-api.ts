@@ -243,7 +243,7 @@ export class ProductsClient implements IProductsClient {
     }
 }
 
-export interface ICategorysClient {
+export interface ICategoriesClient {
     get(): Observable<CategorysVm>;
     create(command: CreateCategoryCommand): Observable<number>;
     get2(id: number): Observable<FileResponse>;
@@ -254,7 +254,7 @@ export interface ICategorysClient {
 @Injectable({
     providedIn: 'root'
 })
-export class CategorysClient implements ICategorysClient {
+export class CategoriesClient implements ICategoriesClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;

@@ -21,7 +21,7 @@ namespace Golobal_IMC_Task.Application.UnitTests.Categorys.Commands.CreateCatego
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            var entity = Context.Categorys.Find(result);
+            var entity = Context.Categories.Find(result);
 
             entity.ShouldNotBeNull();
             entity.CategoryName.ShouldBe(command.CategoryName);

@@ -23,7 +23,7 @@ namespace Golobal_IMC_Task.Application.UnitTests.Categorys.Commands.UpdateCatego
 
             await handler.Handle(command, CancellationToken.None);
 
-            var entity = Context.Categorys.Find(command.Id);
+            var entity = Context.Categories.Find(command.Id);
 
             entity.ShouldNotBeNull();
             entity.CategoryName.ShouldBe(command.CategoryName);

@@ -27,7 +27,7 @@ namespace Golobal_IMC_Task.Application.UnitTests.Categorys.Commands.UpdateCatego
         [Fact]
         public void IsValid_ShouldBeFalse_WhenListTitleIsNotUnique()
         {
-            Context.Categorys.Add(new Category { CategoryName = "Shopping" });
+            Context.Categories.Add(new Category { CategoryName = "Shopping" });
             Context.SaveChanges();
 
             var command = new UpdateCategoryCommand

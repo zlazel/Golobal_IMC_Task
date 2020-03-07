@@ -45,7 +45,7 @@ namespace Golobal_IMC_Task.Application.UnitTests.Common
 
         public static void SeedSampleData(ApplicationDbContext context)
         {
-            context.Categorys.AddRange(
+            context.Categories.AddRange(
                 new Category { Id = 1, CategoryName = "Food & Drink" }
             );
 

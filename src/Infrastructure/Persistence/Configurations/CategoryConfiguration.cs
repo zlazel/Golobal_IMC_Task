@@ -9,6 +9,7 @@ namespace Golobal_IMC_Task.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
+            builder.ToTable("Categories");
             builder.HasKey(c => c.Id);
             builder.Property(t => t.CategoryName)
                 .HasMaxLength(200)

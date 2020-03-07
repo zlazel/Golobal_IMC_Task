@@ -7,7 +7,7 @@ namespace Golobal_IMC_Task.Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {
-        DbSet<Category> Categorys { get; set; }
+        DbSet<Category> Categories { get; set; }
 
         DbSet<Product> Products { get; set; }
 

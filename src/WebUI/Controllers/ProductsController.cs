@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Golobal_IMC_Task.WebUI.Controllers
 {
-    [Authorize]
+   //[/ [Authorize]
     public class ProductsController : ApiController
     {
         [HttpPost]

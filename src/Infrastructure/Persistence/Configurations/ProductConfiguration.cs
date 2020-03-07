@@ -8,6 +8,7 @@ namespace Golobal_IMC_Task.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
+            builder.ToTable("Products");
             builder.Property(t => t.Title)
                 .HasMaxLength(200)
                 .IsRequired();

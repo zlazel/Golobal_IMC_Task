@@ -27,7 +27,7 @@ namespace Golobal_IMC_Task.Infrastructure.Persistence
             _dateTime = dateTime;
         }
 
-        public DbSet<Category> Categorys { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
 

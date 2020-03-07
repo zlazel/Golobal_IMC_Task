@@ -24,7 +24,7 @@ namespace Golobal_IMC_Task.Application.Categorys.Commands.UpdateCategory
 
             public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.Categorys.FindAsync(request.Id);
+                var entity = await _context.Categories.FindAsync(request.Id);
 
                 if (entity == null)
                 {

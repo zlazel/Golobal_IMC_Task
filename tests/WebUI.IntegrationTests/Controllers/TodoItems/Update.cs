@@ -22,7 +22,6 @@ namespace Golobal_IMC_Task.WebUI.IntegrationTests.Controllers.Products
             { 
                 Id = 1, 
                 Title = "Do this thing.",
-                Done = true
             };
 
             var content = IntegrationTestHelper.GetRequestContent(command);

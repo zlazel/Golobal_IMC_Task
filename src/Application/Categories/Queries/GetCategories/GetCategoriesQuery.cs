@@ -25,8 +25,19 @@ namespace Golobal_IMC_Task.Application.Categorys.Queries.GetCategorys
             public async Task<CategoriesVm> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
             {
                 var vm = new CategoriesVm();
+                try
+                {
+                    var cats = await _context.Categories
+                    .OrderBy(t => t.CategoryName)
+                    .ToListAsync(cancellationToken);
 
-                vm.Categories = await _context.Categorys
+                }
+                catch (System.Exception e)
+                {
+
+                    throw;
+                }
+                vm.Categories = await _context.Categories
                     .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
                     .OrderBy(t => t.CategoryName)
                     .ToListAsync(cancellationToken);

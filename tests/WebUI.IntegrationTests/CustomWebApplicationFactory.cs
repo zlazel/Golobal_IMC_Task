@@ -126,7 +126,7 @@ namespace Golobal_IMC_Task.WebUI.IntegrationTests
                 new Product { Id = 1, Title = "Do this thing." },
                 new Product { Id = 2, Title = "Do this thing too." },
                 new Product { Id = 3, Title = "Do many, many things." },
-                new Product { Id = 4, Title = "This thing is done!", Done = true }
+                new Product { Id = 4, Title = "This thing is done!" }
             );
 
             context.SaveChanges();

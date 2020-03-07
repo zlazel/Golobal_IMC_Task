@@ -1,5 +1,6 @@
 ﻿using Golobal_IMC_Task.Application;
 using Golobal_IMC_Task.Application.Common.Models;
+using Golobal_IMC_Task.Application.Products.Commands.CreateProduct;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace Golobal_IMC_Task.Infrastructure.Identity
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public IdentityService(UserManager<ApplicationUser> userManager)
+        public IdentityService(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task<string> GetUserNameAsync(string userId)
@@ -52,6 +55,13 @@ namespace Golobal_IMC_Task.Infrastructure.Identity
             var result = await _userManager.DeleteAsync(user);
 
             return result.ToApplicationResult();
+        }
+
+        public async Task<string> Login(LoginCommand command)
+        {
+            var result = await _signInManager.PasswordSignInAsync(command.UserName, command.Password, false, false );
+            return "";
+
         }
     }
 }

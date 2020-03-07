@@ -6,74 +6,12 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Products": {
+    "/api/Authentication": {
       "post": {
         "tags": [
-          "Products"
+          "Authentication"
         ],
-        "operationId": "Products_Create",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateProductCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      }
-    },
-    "/api/Products/{id}": {
-      "put": {
-        "tags": [
-          "Products"
-        ],
-        "operationId": "Products_Update",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateProductCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
+        "operationId": "Authentication_Login",
         "responses": {
           "200": {
             "description": "",
@@ -86,56 +24,15 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "Products"
-        ],
-        "operationId": "Products_Delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
-    "/api/Categorys": {
+    "/api/Categories": {
       "get": {
         "tags": [
-          "Categorys"
+          "Categories"
         ],
-        "operationId": "Categorys_Get",
+        "operationId": "Categories_Get",
         "responses": {
           "200": {
             "description": "",
@@ -156,9 +53,9 @@
       },
       "post": {
         "tags": [
-          "Categorys"
+          "Categories"
         ],
-        "operationId": "Categorys_Create",
+        "operationId": "Categories_Create",
         "requestBody": {
           "x-name": "command",
           "content": {
@@ -191,12 +88,12 @@
         ]
       }
     },
-    "/api/Categorys/{id}": {
+    "/api/Categories/{id}": {
       "get": {
         "tags": [
-          "Categorys"
+          "Categories"
         ],
-        "operationId": "Categorys_Get2",
+        "operationId": "Categories_Get2",
         "parameters": [
           {
             "name": "id",
@@ -230,9 +127,9 @@
       },
       "put": {
         "tags": [
-          "Categorys"
+          "Categories"
         ],
-        "operationId": "Categorys_Update",
+        "operationId": "Categories_Update",
         "parameters": [
           {
             "name": "id",
@@ -278,9 +175,9 @@
       },
       "delete": {
         "tags": [
-          "Categorys"
+          "Categories"
         ],
-        "operationId": "Categorys_Delete",
+        "operationId": "Categories_Delete",
         "parameters": [
           {
             "name": "id",
@@ -312,50 +209,119 @@
           }
         ]
       }
+    },
+    "/api/Products": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Products/{id}": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Products_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "CreateProductCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "categoryId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "decimal"
-          }
-        }
-      },
-      "UpdateProductCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "type": "number",
-            "format": "decimal"
-          }
-        }
-      },
       "CategoriesVm": {
         "type": "object",
         "additionalProperties": false,
@@ -437,6 +403,46 @@
           "categoryName": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "CreateProductCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
+          }
+        }
+      },
+      "UpdateProductCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal"
           }
         }
       }
