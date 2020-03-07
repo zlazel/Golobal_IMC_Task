@@ -17,20 +17,30 @@ namespace Golobal_IMC_Task.Infrastructure.Persistence
             {
                 await userManager.CreateAsync(defaultUser, "ahmed1@CA");
             }
-            if(!context.Categories.Any()){
-            context.Categories.AddRange(new Category
+            if (!context.Categories.Any())
             {
-                CategoryName = "Food & Drink",
-                Products = new List<Product>
+                context.Categories.AddRange(
+                    new Category
+                    {
+                        CategoryName = "Food",
+                        Products = new List<Product>
                     {
                         new Product { Price = 120,  Title = "Bread"},
                         new Product { Price = 100,  Title = "Butter" },
-                        new Product { Price = 30,  Title = "Milk" },
                         new Product { Price = 20,  Title = "Sugar" },
-                        new Product { Price = 200,  Title = "Coffee" }
                     }
-            });
-                
+                    },
+                    new Category
+                    {
+                        CategoryName = "Drink",
+                        Products = new List<Product>
+                            {
+                            new Product { Price = 30,  Title = "Milk" },
+                            new Product { Price = 200,  Title = "Coffee" }
+                            }
+                    }
+                    );
+
                 context.SaveChanges();
 
             }
